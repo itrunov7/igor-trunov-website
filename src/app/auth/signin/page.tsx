@@ -104,7 +104,7 @@ export default function SignIn() {
                 Chat with Igor AI
               </h3>
               <p className="text-lg text-gray-600 mb-6">
-                Get personalized insights from Igor Trunov's experience in entrepreneurship, 
+                Get personalized insights from Igor Trunov&apos;s experience in entrepreneurship, 
                 innovation, and technology leadership.
               </p>
             </div>
@@ -119,8 +119,8 @@ export default function SignIn() {
                     Personal AI Assistant
                   </h4>
                   <p className="text-gray-600">
-                    Chat with an AI trained on Igor's knowledge, philosophy, and experience. 
-                    Get answers as if you're talking directly to Igor.
+                    Chat with an AI trained on Igor&apos;s knowledge, philosophy, and experience. 
+                    Get answers as if you&apos;re talking directly to Igor.
                   </p>
                 </div>
               </div>

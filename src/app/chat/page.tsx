@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import { Send, MessageSquare, User, Loader2, AlertCircle } from 'lucide-react';
+import { Send, User, Loader2, AlertCircle } from 'lucide-react';
 
 interface Message {
   id: string;

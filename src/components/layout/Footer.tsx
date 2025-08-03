@@ -15,7 +15,7 @@ const Footer = () => {
               <span className="text-xl font-semibold text-gray-900">Igor Trunov</span>
             </div>
             <p className="text-gray-600 mb-4 max-w-md">
-              Entrepreneur, founder & CEO of Atlantix, author of "Digital Generation," 
+              Entrepreneur, founder & CEO of Atlantix, author of &quot;Digital Generation,&quot; 
               and innovator focused on AI, biotechnology, and sustainable technologies.
             </p>
             <div className="flex space-x-4">

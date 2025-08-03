@@ -104,16 +104,16 @@ export default function Projects() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Vision</h2>
               <p className="text-lg text-gray-600 mb-6">
-                Atlantix represents Igor's vision of systematic innovation across multiple high-impact 
-                sectors. We don't just follow trends—we create them, focusing on technologies that 
+                Atlantix represents Igor&apos;s vision of systematic innovation across multiple high-impact 
+                sectors. We don&apos;t just follow trends—we create them, focusing on technologies that 
                 can genuinely transform industries and improve lives.
               </p>
               <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-xl">
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Investment Philosophy</h3>
                 <blockquote className="text-gray-700 italic">
-                  "We don't just invest in companies; we invest in ideas that can change the world. 
-                  Our portfolio represents our belief in the power of technology to solve humanity's 
-                  greatest challenges."
+                  &quot;We don&apos;t just invest in companies; we invest in ideas that can change the world. 
+                  Our portfolio represents our belief in the power of technology to solve humanity&apos;s 
+                  greatest challenges.&quot;
                 </blockquote>
                 <cite className="text-sm font-medium text-gray-600 mt-2 block">— Igor Trunov</cite>
               </div>

@@ -150,7 +150,7 @@ export default function About() {
               </p>
               <div className="border-l-4 border-orange-200 pl-4">
                 <p className="text-sm text-gray-600 italic">
-                  "While others focus on quarterly results, we focus on generational impact."
+                  &quot;While others focus on quarterly results, we focus on generational impact.&quot;
                 </p>
               </div>
             </div>
@@ -166,7 +166,7 @@ export default function About() {
               <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-8 rounded-2xl text-white">
                 <div className="bg-white/10 p-6 rounded-xl">
                   <BookOpen className="w-12 h-12 text-white mb-4" />
-                  <h3 className="text-2xl font-bold mb-4">"Digital Generation"</h3>
+                  <h3 className="text-2xl font-bold mb-4">&quot;Digital Generation&quot;</h3>
                   <p className="text-blue-100 mb-4">
                     A comprehensive guide to understanding how digital transformation affects 
                     leadership, innovation, and society.
@@ -183,20 +183,20 @@ export default function About() {
             <div className="order-1 lg:order-2">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Published Work</h2>
               <p className="text-lg text-gray-600 mb-6">
-                Igor authored "Digital Generation," exploring the profound impact of digital 
+                Igor authored &quot;Digital Generation,&quot; exploring the profound impact of digital 
                 transformation on modern leadership and society. The book serves as a roadmap 
                 for leaders navigating the complexities of our rapidly evolving digital landscape.
               </p>
               <p className="text-lg text-gray-600 mb-8">
                 As a regular contributor to Forbes and other major publications, Igor shares 
-                insights on AI's impact on business strategy, leadership in uncertainty, 
+                insights on AI&apos;s impact on business strategy, leadership in uncertainty, 
                 building innovation ecosystems, and the future of entrepreneurship.
               </p>
               <div className="bg-gray-50 p-6 rounded-xl">
                 <h4 className="font-semibold text-gray-900 mb-2">Notable Quote:</h4>
                 <blockquote className="text-gray-700 italic">
-                  "AI will not replace humans, but humans with AI will replace humans without AI. 
-                  The key is learning to work alongside artificial intelligence, not compete with it."
+                  &quot;AI will not replace humans, but humans with AI will replace humans without AI. 
+                  The key is learning to work alongside artificial intelligence, not compete with it.&quot;
                 </blockquote>
               </div>
             </div>
@@ -213,7 +213,7 @@ export default function About() {
                 Management & Leadership Style
               </h2>
               <p className="text-xl text-gray-600">
-                Igor's approach to team building and decision-making reflects his core philosophy 
+                Igor&apos;s approach to team building and decision-making reflects his core philosophy 
                 of empowerment and strategic thinking.
               </p>
             </div>
@@ -225,8 +225,8 @@ export default function About() {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Team Building</h3>
                 <p className="text-gray-600">
-                  "I focus on hiring people who are smarter than me in their areas of expertise. 
-                  My job is to create conditions where the best answers can emerge."
+                  &quot;I focus on hiring people who are smarter than me in their areas of expertise. 
+                  My job is to create conditions where the best answers can emerge.&quot;
                 </p>
               </div>
               
@@ -236,8 +236,8 @@ export default function About() {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Decision Making</h3>
                 <p className="text-gray-600">
-                  "I believe in data-driven decisions, but I also trust intuition. 
-                  The best business decisions synthesize analytical insights with human judgment."
+                  &quot;I believe in data-driven decisions, but I also trust intuition. 
+                  The best business decisions synthesize analytical insights with human judgment.&quot;
                 </p>
               </div>
               
@@ -247,8 +247,8 @@ export default function About() {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Communication</h3>
                 <p className="text-gray-600">
-                  "I maintain regular one-on-ones with key team members, not to micromanage, 
-                  but to remove obstacles and provide support."
+                  &quot;I maintain regular one-on-ones with key team members, not to micromanage, 
+                  but to remove obstacles and provide support.&quot;
                 </p>
               </div>
             </div>

@@ -20,7 +20,7 @@ export default function Home() {
                 </h1>
                 <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed">
                   Founder & CEO of <span className="text-blue-600 font-semibold">Atlantix</span>, 
-                  author of "Digital Generation," and visionary driving innovation in AI, 
+                  author of &quot;Digital Generation,&quot; and visionary driving innovation in AI, 
                   biotechnology, and sustainable technologies.
                 </p>
               </div>
@@ -131,7 +131,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Thought Leadership</h3>
               <p className="text-gray-600 mb-4">
-                Author of "Digital Generation" and regular contributor to Forbes, 
+                Author of &quot;Digital Generation&quot; and regular contributor to Forbes, 
                 sharing insights on digital transformation and future technology.
               </p>
               <Link href="/articles" className="text-green-600 hover:text-green-700 font-medium">
@@ -150,7 +150,7 @@ export default function Home() {
           </h2>
           <p className="text-xl text-blue-100 mb-8">
             Chat with Igor AI to learn about entrepreneurship, innovation strategies, 
-            and the future of technology. Get personalized insights based on Igor's experience.
+            and the future of technology. Get personalized insights based on Igor&apos;s experience.
           </p>
           <Link
             href="/auth/signin"

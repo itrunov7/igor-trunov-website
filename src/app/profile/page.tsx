@@ -3,7 +3,8 @@
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { User, MessageSquare, Calendar, Settings, LogOut } from 'lucide-react';
+import { User, MessageSquare, Calendar, LogOut } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Profile() {
   const { user, loading, signOut } = useAuth();
@@ -50,9 +51,11 @@ export default function Profile() {
             <div className="flex items-center space-x-6">
               <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                 {user?.photoURL ? (
-                  <img
+                  <Image
                     src={user.photoURL}
                     alt="Profile"
+                    width={80}
+                    height={80}
                     className="w-20 h-20 rounded-full object-cover"
                   />
                 ) : (
