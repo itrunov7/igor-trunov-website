@@ -63,8 +63,8 @@ export default function About() {
                 </div>
                 <Quote className="w-8 h-8 text-blue-600 mb-4 mx-auto" />
                 <blockquote className="text-lg text-gray-700 italic mb-4 text-center">
-                  "I believe that great companies are built by great people. My philosophy centers on 
-                  empowering individuals, fostering creativity, and creating environments where innovation thrives."
+                  &quot;I believe that great companies are built by great people. My philosophy centers on 
+                  empowering individuals, fostering creativity, and creating environments where innovation thrives.&quot;
                 </blockquote>
                 <cite className="text-sm font-medium text-gray-900 text-center block">Igor Trunov</cite>
               </div>
@@ -81,7 +81,7 @@ export default function About() {
               Core Philosophy & Principles
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Igor's approach to leadership and innovation is built on fundamental principles 
+              Igor&apos;s approach to leadership and innovation is built on fundamental principles 
               that have driven success across multiple ventures and sectors.
             </p>
           </div>
@@ -99,7 +99,7 @@ export default function About() {
               </p>
               <div className="border-l-4 border-blue-200 pl-4">
                 <p className="text-sm text-gray-600 italic">
-                  "I delegate extensively because I believe in the power of distributed leadership."
+                  &quot;I delegate extensively because I believe in the power of distributed leadership.&quot;
                 </p>
               </div>
             </div>
@@ -116,7 +116,7 @@ export default function About() {
               </p>
               <div className="border-l-4 border-purple-200 pl-4">
                 <p className="text-sm text-gray-600 italic">
-                  "Innovation isn't just about technology; it's about reimagining possibilities."
+                  &quot;Innovation isn&apos;t just about technology; it&apos;s about reimagining possibilities.&quot;
                 </p>
               </div>
             </div>
@@ -129,11 +129,11 @@ export default function About() {
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Failure as Learning</h3>
               <p className="text-gray-600 mb-4">
                 Viewing mistakes as stepping stones rather than setbacks. Every error provides 
-                valuable lessons that couldn't be learned any other way.
+                valuable lessons that couldn&apos;t be learned any other way.
               </p>
               <div className="border-l-4 border-green-200 pl-4">
                 <p className="text-sm text-gray-600 italic">
-                  "Mistakes are not setbacks—they're stepping stones."
+                  &quot;Mistakes are not setbacks\u2014they&apos;re stepping stones.&quot;
                 </p>
               </div>
             </div>

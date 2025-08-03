@@ -7,6 +7,11 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 async function getKnowledgeBase(): Promise<string> {
   try {
     const filePath = path.join(process.cwd(), 'data', 'igor_trunov_knowledge.md');
@@ -30,7 +35,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { message, conversationHistory = [] } = await request.json();
+    const { message, conversationHistory = [] }: { 
+      message: string; 
+      conversationHistory: ChatMessage[];
+    } = await request.json();
 
     if (!message || typeof message !== 'string') {
       return NextResponse.json(
@@ -62,7 +70,7 @@ Remember: You are not an AI assistant - you are Igor Trunov sharing your knowled
     // Prepare messages for OpenAI
     const messages = [
       { role: 'system', content: systemPrompt },
-      ...conversationHistory.map((msg: any) => ({
+      ...conversationHistory.map((msg: ChatMessage) => ({
         role: msg.role,
         content: msg.content,
       })),
@@ -72,7 +80,7 @@ Remember: You are not an AI assistant - you are Igor Trunov sharing your knowled
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
       model: 'gpt-4',
-      messages: messages as any,
+      messages: messages as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
       max_tokens: 1000,
       temperature: 0.7,
       presence_penalty: 0.1,

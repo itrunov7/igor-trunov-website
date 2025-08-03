@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp, FirebaseApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider, Auth } from 'firebase/auth';
+import { getFirestore, Firestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "demo-key",
@@ -12,10 +12,10 @@ const firebaseConfig = {
 };
 
 // Only initialize Firebase if we have a real API key
-let app: any = null;
-let auth: any = null;
-let googleProvider: any = null;
-let db: any = null;
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
+let googleProvider: GoogleAuthProvider | null = null;
+let db: Firestore | null = null;
 
 if (process.env.NEXT_PUBLIC_FIREBASE_API_KEY && 
     process.env.NEXT_PUBLIC_FIREBASE_API_KEY !== "demo-key" &&
