@@ -12,6 +12,13 @@ interface Message {
   timestamp: string;
 }
 
+interface UsageStats {
+  questionsUsed: number;
+  questionsRemaining: number;
+  dailyLimit: number;
+  resetTime: string;
+}
+
 export default function Chat() {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -19,6 +26,8 @@ export default function Chat() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [usageStats, setUsageStats] = useState<UsageStats | null>(null);
+  const [rateLimitReached, setRateLimitReached] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -31,6 +40,32 @@ export default function Chat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Fetch usage stats when user is loaded
+  useEffect(() => {
+    if (user) {
+      fetchUsageStats();
+    }
+  }, [user]);
+
+  const fetchUsageStats = async () => {
+    try {
+      const token = await user?.getIdToken();
+      const response = await fetch('/api/usage', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const stats = await response.json();
+        setUsageStats(stats);
+        setRateLimitReached(stats.questionsRemaining <= 0);
+      }
+    } catch (error) {
+      console.error('Error fetching usage stats:', error);
+    }
+  };
 
   useEffect(() => {
     // Add welcome message when chat loads
@@ -103,10 +138,50 @@ What would you like to discuss today?`,
 
       if (!response.ok) {
         const errorData = await response.json();
+        
+        // Handle rate limit specifically
+        if (response.status === 429 && errorData.details?.limitReached) {
+          setRateLimitReached(true);
+          setUsageStats(prev => prev ? {
+            ...prev,
+            questionsRemaining: 0
+          } : null);
+          
+          const rateLimitMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            role: 'assistant',
+            content: `I'm sorry, but you've reached your daily limit of 20 questions. Your questions will reset tomorrow at midnight UTC. 
+
+Thank you for using Igor AI! I hope our conversations have been helpful. Please come back tomorrow to continue our discussion.`,
+            timestamp: new Date().toISOString(),
+          };
+          
+          setMessages(prev => [...prev, rateLimitMessage]);
+          return;
+        }
+        
         throw new Error(errorData.error || 'Failed to send message');
       }
 
       const data = await response.json();
+      
+      // Update usage stats if provided
+      if (data.usage) {
+        setUsageStats(prev => prev ? {
+          ...prev,
+          questionsUsed: prev.dailyLimit - data.usage.remainingQuestions,
+          questionsRemaining: data.usage.remainingQuestions,
+        } : {
+          questionsUsed: data.usage.dailyLimit - data.usage.remainingQuestions,
+          questionsRemaining: data.usage.remainingQuestions,
+          dailyLimit: data.usage.dailyLimit,
+          resetTime: data.usage.resetTime,
+        });
+        
+        if (data.usage.remainingQuestions <= 0) {
+          setRateLimitReached(true);
+        }
+      }
       
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -158,14 +233,44 @@ What would you like to discuss today?`,
       <div className="max-w-4xl mx-auto h-screen flex flex-col">
         {/* Header */}
         <div className="bg-white border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center space-x-4">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-sm">IT</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-sm">IT</span>
+              </div>
+              <div>
+                <h1 className="text-lg font-semibold text-gray-900">Igor Trunov</h1>
+                <p className="text-sm text-gray-500">AI Assistant • Available now</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-lg font-semibold text-gray-900">Igor Trunov</h1>
-              <p className="text-sm text-gray-500">AI Assistant • Available now</p>
-            </div>
+            
+            {/* Usage Stats */}
+            {usageStats && (
+              <div className="text-right">
+                <div className="flex items-center space-x-2">
+                  <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    rateLimitReached 
+                      ? 'bg-red-100 text-red-800' 
+                      : usageStats.questionsRemaining <= 5 
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-green-100 text-green-800'
+                  }`}>
+                    {rateLimitReached 
+                      ? 'Limit Reached' 
+                      : `${usageStats.questionsRemaining} questions left`
+                    }
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  {usageStats.questionsUsed}/{usageStats.dailyLimit} used today
+                </p>
+                {rateLimitReached && (
+                  <p className="text-xs text-red-600 mt-1">
+                    Resets at midnight UTC
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -246,34 +351,58 @@ What would you like to discuss today?`,
 
         {/* Input */}
         <div className="bg-white border-t border-gray-200 px-6 py-4">
-          <div className="flex items-end space-x-3">
-            <div className="flex-1 relative">
-              <textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(e) => {
-                  setInput(e.target.value);
-                  adjustTextareaHeight();
-                }}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask Igor about leadership, innovation, or anything..."
-                className="w-full resize-none rounded-2xl border border-gray-300 px-4 py-3 pr-12 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none text-sm"
-                rows={1}
-                style={{ minHeight: '44px', maxHeight: '120px' }}
-              />
+          {rateLimitReached ? (
+            <div className="text-center py-4">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 max-w-md mx-auto">
+                <h3 className="text-lg font-medium text-red-800 mb-2">Daily Limit Reached</h3>
+                <p className="text-sm text-red-700 mb-3">
+                  You&apos;ve used all 20 questions for today. Your limit will reset at midnight UTC.
+                </p>
+                <p className="text-xs text-red-600">
+                  Thank you for using Igor AI! Please come back tomorrow to continue our conversation.
+                </p>
+              </div>
             </div>
-            <button
-              onClick={sendMessage}
-              disabled={!input.trim() || isLoading}
-              className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-            >
-              <Send className="w-4 h-4" />
-            </button>
-          </div>
-          
-          <p className="text-xs text-gray-500 mt-2 text-center">
-            Press Enter to send, Shift+Enter for new line
-          </p>
+          ) : (
+            <>
+              <div className="flex items-end space-x-3">
+                <div className="flex-1 relative">
+                  <textarea
+                    ref={textareaRef}
+                    value={input}
+                    onChange={(e) => {
+                      setInput(e.target.value);
+                      adjustTextareaHeight();
+                    }}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Ask Igor about leadership, innovation, or anything..."
+                    className="w-full resize-none rounded-2xl border border-gray-300 px-4 py-3 pr-12 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none text-sm"
+                    rows={1}
+                    style={{ minHeight: '44px', maxHeight: '120px' }}
+                    disabled={rateLimitReached}
+                  />
+                </div>
+                <button
+                  onClick={sendMessage}
+                  disabled={!input.trim() || isLoading || rateLimitReached}
+                  className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+              
+              <div className="flex justify-between items-center mt-2">
+                <p className="text-xs text-gray-500">
+                  Press Enter to send, Shift+Enter for new line
+                </p>
+                {usageStats && !rateLimitReached && (
+                  <p className="text-xs text-gray-500">
+                    {usageStats.questionsRemaining} questions remaining today
+                  </p>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

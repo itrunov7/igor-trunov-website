@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import fs from 'fs';
 import path from 'path';
+import { checkRateLimit, incrementQuestionCount } from '@/lib/rate-limiter';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -32,6 +33,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Unauthorized. Please sign in to access the chat.' },
         { status: 401 }
+      );
+    }
+
+    // Extract the token
+    const token = authHeader.replace('Bearer ', '');
+
+    // Check rate limit before processing
+    const rateLimitCheck = await checkRateLimit(token);
+    
+    if (!rateLimitCheck.allowed) {
+      return NextResponse.json(
+        { 
+          error: 'Daily question limit reached',
+          details: {
+            message: 'You have reached your daily limit of 20 questions. Your limit will reset tomorrow.',
+            remainingQuestions: rateLimitCheck.remainingQuestions,
+            resetTime: rateLimitCheck.resetTime,
+            limitReached: true
+          }
+        },
+        { status: 429 }
       );
     }
 
@@ -96,9 +118,22 @@ Remember: You are not an AI assistant - you are Igor Trunov sharing your knowled
       );
     }
 
+    // Increment the user's question count after successful response
+    if (rateLimitCheck.userId) {
+      await incrementQuestionCount(rateLimitCheck.userId);
+    }
+
+    // Calculate updated remaining questions
+    const updatedRemaining = Math.max(0, rateLimitCheck.remainingQuestions - 1);
+
     return NextResponse.json({
       response,
       timestamp: new Date().toISOString(),
+      usage: {
+        remainingQuestions: updatedRemaining,
+        dailyLimit: 20,
+        resetTime: rateLimitCheck.resetTime,
+      }
     });
 
   } catch (error) {
